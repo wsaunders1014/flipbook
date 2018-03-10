@@ -1,1 +1,1 @@
-ssh -i ~/.ssh/cia.pem ec2-user@52.53.78.28
+ssh -i ~/.ssh/cia.pem ec2-user@54.215.120.251
