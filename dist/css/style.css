@@ -9,12 +9,20 @@ header {
   z-index: 1000;
   overflow: hidden;
 }
+header h1 {
+  margin-left: 10px;
+}
+a {
+  color: inherit;
+}
 #main {
   background: #333;
   min-height: calc(100% - 80px);
   position: absolute;
   width: 100%;
   z-index: 1;
+  padding: 10px;
+  color: #fff;
 }
 #main #page-holder {
   position: absolute;

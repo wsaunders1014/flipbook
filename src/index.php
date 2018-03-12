@@ -19,30 +19,27 @@ ini_set('display_errors', 1);
 		<h1>CIA Flipbook</h1>
 	</header>
 	<div id="main">
-		<div id="page-holder">
+		<h3>Generated PDFs</h3>
 		<?php
-			$dirname = "generated/";
-			$images = glob($dirname."page-*.jpg",GLOB_NOSORT);
-			$files = count($images);
-		
-			for($i=1;$i<$files+1;$i++) {
-				if($i==1){
-					echo '<div class="page open" style="left:50%;"><img src="generated/page-'.$i.'.jpg" /></div>';
-				}else{
-					echo '<div class="page" style="left:50%;"><img src="generated/page-'.$i.'.jpg" /></div>';
-				}
+
+			$dirs = array_filter(glob('generated/*'), 'is_dir');
+			for($i=0;$i<count($dirs);$i++){
+				echo '<div>';
+				echo '<a href="'.$dirs[$i].'">'.substr($dirs[$i],10).'</a>';
+				echo '</div>';
 			}
 		?>
-		</div>
-		<div class="arrow left">
-			<
-		</div>
-		<div class="arrow right">
-			>
-		</div>
-		<div class="thumbs">
 
-		</div>
+		<h3>Create Flipbook</h3>
+		<form action="convert.php" method="post" enctype="multipart/form-data">
+			<label for="proj-name">Flipbook Name</label>
+			<br>(A-Z, 0 - 9, -, _)<br/>
+			<input type="text" name="proj-name" placeholder="Enter Name"/>
+			<br/><br/>
+			<input name="file" type="file"/>
+			<br/>
+			<button type="submit">UPLOAD</button>
+		</form>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 	<script src="js/scripts.js"></script>
