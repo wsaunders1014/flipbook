@@ -16,16 +16,16 @@ ini_set('display_errors', 1);
 </head>
 <body>
 	<header>
-		<h1>CIA Flipbook</h1>
+		<h1><a href="http://<?php echo $_SERVER['SERVER_NAME']; ?>">CIA Flipbook</a></h1>
 	</header>
 	<div id="main">
 		<h3>Generated PDFs</h3>
 		<?php
 
 			$dirs = array_filter(glob('generated/*'), 'is_dir');
-			for($i=0;$i<count($dirs);$i++){
+			foreach($dirs as $dir){
 				echo '<div>';
-				echo '<a href="'.$dirs[$i].'">'.substr($dirs[$i],10).'</a>';
+				echo '<a href="'.$dir.'">'.substr($dir,10).'</a>';
 				echo '</div>';
 			}
 		?>
