@@ -71,6 +71,6 @@ foreach($files as $file){ // iterate files
 }
 
 copy('generated/display.php',$genDir.'/index.php');
-header('Location: generated/'.$genDir.'/index.php');
+header('Location: '.$genDir.'/index.php');
 
 ?>

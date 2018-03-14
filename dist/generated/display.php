@@ -22,14 +22,15 @@ ini_set('display_errors', 1);
 		<div id="page-holder">
 		<?php
 			
-			$images = glob("page-*.jpg",GLOB_NOSORT);
-			//$files = count($images);
+			$images = glob("page-*.jpg");
+			$files = count($images);
 		
 			for($i=1;$i<$files+1;$i++) {
+				if($files > 9 && $i<10){
+					$i='0'.$i;
+				}
 				if($i==1){
-					echo '<div class="page open" style="left:50%;"><img src="page-0'.$i.'.jpg" /></div>';
-				}else if($i < 10){
-					echo '<div class="page" style="left:50%;"><img src="page-0'.$i.'.jpg" /></div>';
+					echo '<div class="page open" style="left:50%;"><img src="page-'.$i.'.jpg" /></div>';
 				}else{
 					echo '<div class="page" style="left:50%;"><img src="page-'.$i.'.jpg" /></div>';
 				}
