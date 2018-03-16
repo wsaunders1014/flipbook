@@ -56,6 +56,8 @@ $(document).ready(function(){
 	//Add Zoom Clas
 	$('.page').dblclick(function(){
 		$(this).toggleClass('zoom');
+		$('.arrow').toggleClass('hide');
+		$(this).find('img').css({left:0,top:0})
 	});
 	//ZOOM DRAG
 	$('#page-holder').on('mousedown','.zoom', function(e){
@@ -69,32 +71,33 @@ $(document).ready(function(){
 		var currX = $img.offset().left;
 		var currY = $img.offset().top;
 		var posLeft = $img.position().left;
+		var posTop = $img.position().top;
 		//console.log(imgW,pageW,imgH,pageH)
 		var pageLeft = $this.offset().left;
 		var pageTop = $this.offset().top;
 		var startX = e.pageX;
 		var startY = e.pageY;
-		var topLimit = (imgH - pageH)/2;
-		var leftLimit = (imgW-pageW)/2;
+		var topLimit = (imgH - pageH)-pageTop;
+		var leftLimit = (imgW-pageW)-pageLeft;
 		//console.log(leftLimit, topLimit);
 		//left:114
 		$(this).on('mousemove', function(e){
 			var moveX = currX + (e.pageX  - startX);
-			var moveY = currY + (e.pageY- startY);
-			//console.log(moveX,leftLimit);
-			console.log(posLeft,currX,moveX,pageLeft)
+			var moveY = currY + (e.pageY - startY);
+			console.log(moveX,pageLeft)
+			//Left bound
 			if(moveX > pageLeft)
 				moveX = pageLeft;
-			 else if(moveX < -(leftLimit))
+			//Right Bound
+			if(moveX < -(leftLimit))
 			 	moveX = -(leftLimit);
-			//console.log(moveX)
+			//Top Bound
 			if(moveY > pageTop)
 				moveY = pageTop;
-			else if(moveY < -(topLimit))
+			//Bottom Bound
+			 if(moveY < -(topLimit))
 				moveY = -(topLimit);
-			// 	moveY = -(imgH - pageH)/2;
-			// else if(moveY < (imgH - pageH)/2)
-			// 	moveY =  (imgH - pageH)/2;
+			
 			$(this).find('img').offset({left:moveX,top:moveY});
 		}).on('mouseup mouseleave', function(){
 			$(this).off('mousemove mouseup mouseleave');

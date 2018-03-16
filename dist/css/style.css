@@ -61,12 +61,15 @@ a {
   height: 100%;
   z-index: 1001;
   position: fixed;
+  z-index: 5 !important;
+  clip: unset !important;
 }
 #main .page.zoom img {
   transform: scale(1.2);
   position: absolute;
   top: 0;
   left: 0;
+  cursor: move;
 }
 @media (orientation: landscape) {
   #main #page-holder {
@@ -78,6 +81,9 @@ a {
   #main .page img {
     left: 100%;
   }
+}
+#main .hide {
+  display: none;
 }
 #main .arrow {
   position: absolute;

@@ -63,11 +63,14 @@ a {
 			height: 100%;
 			z-index: 1001;
 			position: fixed;
+			z-index: 5 !important;
+    		clip: unset !important;
 			img{
 				transform:scale(1.2);
 				position: absolute;
 				top: 0;
 				left: 0;
+				cursor: move;
 			}
 		}
 	}
@@ -82,7 +85,9 @@ a {
 			}
 		}
 	}
-
+	.hide {
+		display: none;
+	}
 	.arrow{
 		position: absolute;
 		color: #fff;
