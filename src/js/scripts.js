@@ -52,5 +52,8 @@ $(document).ready(function(){
 			}});
 			currPage = pages;
 		}
-	})
+	});
+	$('.page').dblclick(function(){
+		$(this).toggleClass('zoom');
+	});
 })

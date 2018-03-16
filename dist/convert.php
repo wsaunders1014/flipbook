@@ -1,6 +1,6 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 $uploadDir = "pdf/";
 $_FILES["file"]["name"] = str_replace(" ","_",$_FILES["file"]["name"]);
 $file = $uploadDir . basename($_FILES["file"]["name"]);
@@ -36,7 +36,7 @@ if($fileType !='pdf'){
     $uploadOk = 0;
 }
 // Check file size
-if ($_FILES["file"]["size"] > 100000000) {
+if ($_FILES["file"]["size"] > 150000000) {
     echo "Sorry, your file is too large.";
     $uploadOk = 0;
 }
@@ -55,8 +55,17 @@ if ($uploadOk == 0) {
             exec('sudo chown -R ec2-user '.$genDir);
            
         }
-        exec('pdftocairo -r 300 -jpeg '.$file.' '.$genDir.'/page',$output);
-        echo print_r($output);
+        exec('/usr/local/bin/pdftopng -r 300 '.$file.' '.$genDir.'/page 2>&1',$output,$return_var);
+        //echo print_r($output);
+       // print_r($output);
+        //| grep '[0-9]\{3,4\}x[0-9]\{3,4\} '
+        //exec("identify ".$genDir."/page-000001.png  | grep -o '[0-9]\{3,4\}x[0-9]\{3,4\} ' 2>&1",$size,$return_var);
+        // $size = explode('x',$size[0]);
+        // print_r($size);
+        // $coverW = $size[0];
+        // $coverH = $size[1];
+        exec('optipng -o4'.$genDir.'/page-*.png');
+
     } else {
         echo "Sorry, there was an error uploading your file.<br/>";
         print_r($_FILES);
@@ -70,7 +79,7 @@ foreach($files as $file){ // iterate files
     unlink($file); // delete file
 }
 
-copy('generated/display.php',$genDir.'/index.php');
-header('Location: '.$genDir.'/index.php');
+copy('display.php',$genDir.'/index.php');
+//header('Location: '.$genDir.'/index.php');
 
 ?>
