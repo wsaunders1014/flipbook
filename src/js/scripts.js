@@ -53,7 +53,52 @@ $(document).ready(function(){
 			currPage = pages;
 		}
 	});
+	//Add Zoom Clas
 	$('.page').dblclick(function(){
 		$(this).toggleClass('zoom');
 	});
+	//ZOOM DRAG
+	$('#page-holder').on('mousedown','.zoom', function(e){
+		//console.log(e.pageX,e.pageY);
+		var $this = $(this);
+		var $img =  $this.find('img');
+		var imgW =  $img[0].getBoundingClientRect().width;
+		var imgH =  $img[0].getBoundingClientRect().height;
+		var pageW = $this.width();
+		var pageH = $this.height();
+		var currX = $img.offset().left;
+		var currY = $img.offset().top;
+		var posLeft = $img.position().left;
+		//console.log(imgW,pageW,imgH,pageH)
+		var pageLeft = $this.offset().left;
+		var pageTop = $this.offset().top;
+		var startX = e.pageX;
+		var startY = e.pageY;
+		var topLimit = (imgH - pageH)/2;
+		var leftLimit = (imgW-pageW)/2;
+		//console.log(leftLimit, topLimit);
+		//left:114
+		$(this).on('mousemove', function(e){
+			var moveX = currX + (e.pageX  - startX);
+			var moveY = currY + (e.pageY- startY);
+			//console.log(moveX,leftLimit);
+			console.log(posLeft,currX,moveX,pageLeft)
+			if(moveX > pageLeft)
+				moveX = pageLeft;
+			 else if(moveX < -(leftLimit))
+			 	moveX = -(leftLimit);
+			//console.log(moveX)
+			if(moveY > pageTop)
+				moveY = pageTop;
+			else if(moveY < -(topLimit))
+				moveY = -(topLimit);
+			// 	moveY = -(imgH - pageH)/2;
+			// else if(moveY < (imgH - pageH)/2)
+			// 	moveY =  (imgH - pageH)/2;
+			$(this).find('img').offset({left:moveX,top:moveY});
+		}).on('mouseup mouseleave', function(){
+			$(this).off('mousemove mouseup mouseleave');
+		})
+
+	})
 })

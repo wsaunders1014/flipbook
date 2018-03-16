@@ -37,12 +37,14 @@ a {
 		top: 50%;
 		transform:translateY(-50%);
 		overflow: hidden;
+		user-select:none;
 		img{
 			display: block;
 			width: 100%;
 			height: auto;
 			position: relative;
 			left: 0%;
+			//pointer-events: none;
 		}
 		&.open{
 			z-index: 3;
@@ -61,6 +63,12 @@ a {
 			height: 100%;
 			z-index: 1001;
 			position: fixed;
+			img{
+				transform:scale(1.2);
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
 		}
 	}
 	@media (orientation:landscape){

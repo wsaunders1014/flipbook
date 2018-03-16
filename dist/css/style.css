@@ -37,6 +37,7 @@ a {
   top: 50%;
   transform: translateY(-50%);
   overflow: hidden;
+  user-select: none;
 }
 #main .page img {
   display: block;
@@ -60,6 +61,12 @@ a {
   height: 100%;
   z-index: 1001;
   position: fixed;
+}
+#main .page.zoom img {
+  transform: scale(1.2);
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 @media (orientation: landscape) {
   #main #page-holder {

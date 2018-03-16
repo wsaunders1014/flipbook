@@ -21,7 +21,7 @@
 			$images = glob("144/page-*");
 			$files = count($images);
 			foreach($images as $i=>$image){
-				echo '<div class="page'.(($i==0) ? " open":"").'" style="left:50%;"><img src="'.$image.'" /></div>';
+				echo '<div class="page'.(($i==0) ? " open":"").'" style="left:50%;"><img draggable="false" src="'.$image.'" /></div>';
 			}
 		?>
 		</div>
