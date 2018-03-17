@@ -11,6 +11,18 @@ header {
 }
 header h1 {
   margin-left: 10px;
+  display: inline-block;
+}
+header .btn {
+  position: absolute;
+  top: 24px;
+  right: 10px;
+  cursor: pointer;
+  background: #aaa;
+  padding: 5px;
+  text-align: center;
+  font-family: 'Arial';
+  border: 1px solid;
 }
 a {
   color: inherit;
@@ -46,14 +58,20 @@ a {
   position: relative;
   left: 0%;
 }
-#main .page.open {
+#main .page.first {
   z-index: 3;
 }
-#main .page.open img {
+#main .page.first img {
   left: 0%;
 }
-#main .page .opening img {
-  box-shadow: 0px 6px 15px 9px rgba(0, 0, 0, 0.3);
+#main .page.open {
+  z-index: 4;
+}
+#main .page.open img {
+  left: 0;
+}
+#main .page.opening {
+  z-index: 5;
 }
 #main .page.zoom {
   left: 0 !important;
@@ -61,7 +79,7 @@ a {
   height: 100%;
   z-index: 1001;
   position: fixed;
-  z-index: 5 !important;
+  z-index: 10 !important;
   clip: unset !important;
 }
 #main .page.zoom img {

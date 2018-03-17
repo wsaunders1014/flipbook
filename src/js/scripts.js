@@ -13,29 +13,36 @@ $(document).ready(function(){
 		var imgW = $('.page').width();
 		var imgH = $('.page').height();
 		console.log(imgW, imgH);
+		//
 		if($(this).hasClass('left') && currPage != 0){
 			//animate page left
-			$('.page').eq(currPage-2).css({zIndex:4,clip:'rect(0px,'+imgW+'px,'+imgH+'px, '+0+'px)'}).find('img').css({left:0});
-			$('.page').eq(currPage-1).addClass('opening').css({zIndex:5,textIndent:0}).animate({textIndent:100},{ease:'easeInOut',duration:1000,step:function(now){
-				console.log(now);
-				
-				$(this).find('img').css({left:now+'%'});
-				
-				$(this).css({left:(now/2)+'%'});
-				$(this).next().css({clip:'rect(0px,'+imgW+'px,'+imgH+'px,'+imgW*(now/100)+'px)'})
-				
-			}});
+			if(pagesShown==2){
+				$('.page').eq(currPage-2).addClass('open').css({clip:'rect(0px,'+imgW+'px,'+imgH+'px, '+0+'px)'}).find('img').css({left:0});
+				$('.page').eq(currPage-1).css({textIndent:0}).animate({textIndent:100},{ease:'easeInOut',duration:1000,step:function(now){
+					$(this).find('img').css({left:now+'%'});
+					$(this).css({left:(now/2)+'%'});
+					$(this).next().css({clip:'rect(0px,'+imgW+'px,'+imgH+'px,'+imgW*(now/100)+'px)'})	
+				},complete:function(){
+					$('.open').removeClass('open')
+					$(this).prev().addClass('open').prev().addClass('open');
+				}});
+			}
 			currPage -=pagesShown;
 		}else if($(this).hasClass('right') && currPage < pages-pagesShown){
 			//animate page right
-			$('.page').eq(currPage+2).css({zIndex:4,clip:'rect(0px,'+imgW+'px,'+imgH+'px, '+imgW+'px)'}).find('img').css({left:0});
-			$('.page').eq(currPage+1).css({zIndex:5,textIndent:100}).animate({textIndent:0},{ease:'easeInOut',duration:1000,step:function(now){
+			var oldCurr = currPage;
+			$('.page').eq(currPage+2).addClass('opening').css({clip:'rect(0px,'+imgW+'px,'+imgH+'px, '+imgW+'px)'}).find('img').css({left:0});
+			$('.page').eq(currPage+1).addClass('opening').css({textIndent:100}).animate({textIndent:0},{ease:'easeInOut',duration:1000,step:function(now){
 				
 				$(this).find('img').css({left:now+'%'});
 				
 				$(this).css({left:(now/2)+'%'});
 				$(this).next().css({clip:'rect(0px,'+imgW+'px,'+imgH+'px,'+imgW*(now/100)+'px)'})
 				
+			},complete:function(){
+				$('.page').eq(oldCurr).removeClass('open')
+				$('.page').eq(oldCurr-1).removeClass('open')
+				$('.opening').removeClass('opening').addClass('open');
 			}});
 			currPage +=pagesShown;
 			
@@ -56,12 +63,13 @@ $(document).ready(function(){
 	//Add Zoom Clas
 	$('.page').dblclick(function(){
 		$(this).toggleClass('zoom');
+		//Hide arrows.
 		$('.arrow').toggleClass('hide');
+		//Reset zoomed image position.
 		$(this).find('img').css({left:0,top:0})
 	});
 	//ZOOM DRAG
 	$('#page-holder').on('mousedown','.zoom', function(e){
-		//console.log(e.pageX,e.pageY);
 		var $this = $(this);
 		var $img =  $this.find('img');
 		var imgW =  $img[0].getBoundingClientRect().width;
@@ -70,21 +78,17 @@ $(document).ready(function(){
 		var pageH = $this.height();
 		var currX = $img.offset().left;
 		var currY = $img.offset().top;
-		var posLeft = $img.position().left;
-		var posTop = $img.position().top;
-		//console.log(imgW,pageW,imgH,pageH)
 		var pageLeft = $this.offset().left;
 		var pageTop = $this.offset().top;
 		var startX = e.pageX;
 		var startY = e.pageY;
 		var topLimit = (imgH - pageH)-pageTop;
 		var leftLimit = (imgW-pageW)-pageLeft;
-		//console.log(leftLimit, topLimit);
-		//left:114
+
 		$(this).on('mousemove', function(e){
 			var moveX = currX + (e.pageX  - startX);
 			var moveY = currY + (e.pageY - startY);
-			console.log(moveX,pageLeft)
+			
 			//Left bound
 			if(moveX > pageLeft)
 				moveX = pageLeft;
@@ -101,7 +105,30 @@ $(document).ready(function(){
 			$(this).find('img').offset({left:moveX,top:moveY});
 		}).on('mouseup mouseleave', function(){
 			$(this).off('mousemove mouseup mouseleave');
-		})
-
+		});
+	});
+	//FULL SCREEN BTN
+	var fullscreen = false;
+	$('#fullscreen-btn').on('click', function(){
+		if(!fullscreen){
+			fullscreen = true;
+		  if(document.documentElement.requestFullscreen) {
+		    document.documentElement.requestFullscreen();
+		  } else if(document.documentElement.mozRequestFullScreen) {
+		    document.documentElement.mozRequestFullScreen();
+		  } else if(document.documentElement.webkitRequestFullscreen) {
+		    document.documentElement.webkitRequestFullscreen();
+		  } else if(document.documentElement.msRequestFullscreen) {
+		    document.documentElement.msRequestFullscreen();
+		  }
+		}else{
+			if(document.exitFullscreen) {
+		    	document.exitFullscreen();
+			} else if(document.mozCancelFullScreen) {
+			    document.mozCancelFullScreen();
+		  	} else if(document.webkitExitFullscreen) {
+			    document.webkitExitFullscreen();
+		  	}
+		}
 	})
 })
