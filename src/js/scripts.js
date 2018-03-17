@@ -60,6 +60,17 @@ $(document).ready(function(){
 			currPage = pages;
 		}
 	});
+	$('#last-page').on('click',function(){
+		$('.page').eq(pages-1).addClass('opening').css({zIndex:5,textIndent:100}).animate({textIndent:0},{ease:'easeInOut',duration:1000,step:function(now){
+				
+				// $(this).find('img').css({left:now+'%'});
+				// $('.page').css({left:(now/2)+'%'});
+				// $(this).css({left:(now/2)+'%'});
+				// //$(this).next().css({clip:'rect(0px,'+imgW+'px,'+imgH+'px,'+imgW*(now/100)+'px)'})
+				
+			}});
+			currPage = pages;
+	})
 	//Add Zoom Clas
 	$('.page').dblclick(function(){
 		$(this).toggleClass('zoom');
@@ -130,5 +141,6 @@ $(document).ready(function(){
 			    document.webkitExitFullscreen();
 		  	}
 		}
-	})
+	});
+
 })
