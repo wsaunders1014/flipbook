@@ -12,17 +12,23 @@ header{
 		margin-left: 10px;
 		display: inline-block;
 	}
-	.btn{
+	.menu{
 		position: absolute;
-	    top: 24px;
-	    right: 10px;
-	    cursor: pointer;
-	    background: #aaa;
-	    padding: 5px;
-	    text-align: center;
-	    font-family: 'Arial';
-	    border: 1px solid;
-	}
+		right: 2vw;
+		top: 30px;
+		.btn{
+		    top: 24px;
+		    right: 10px;
+		    cursor: pointer;
+		    background: #aaa;
+		    padding: 5px;
+		    text-align: center;
+		    font-family: 'Arial';
+		    border: 1px solid;
+		    display: inline-block;
+		    margin-left: 10px;
+		}
+	}	
 }
 a {
 	color: inherit;
@@ -73,7 +79,7 @@ a {
 		&.opening{
 			z-index: 5;
 			img{
-		    	//box-shadow: 0px 6px 15px 9px rgba(0,0,0,0.3);
+		    	box-shadow: 0px 6px 15px 9px rgba(0,0,0,0.3);
 		    }
 		}
 		&.zoom {

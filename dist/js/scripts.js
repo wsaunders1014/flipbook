@@ -14,22 +14,24 @@ $(document).ready(function(){
 		var imgH = $('.page').height();
 		console.log(imgW, imgH);
 		//
-		if($(this).hasClass('left') && currPage != 0){
+		if($(this).hasClass('left') && currPage != 0 && currPage != pages){
 			//animate page left
+			console.log('animate page left')
 			if(pagesShown==2){
-				$('.page').eq(currPage-2).addClass('open').css({clip:'rect(0px,'+imgW+'px,'+imgH+'px, '+0+'px)'}).find('img').css({left:0});
+				$('.page').eq(currPage-2).addClass('open').css({clip:'rect(0px,'+imgW+'px,'+imgH+'px, '+0+'px)',left:'50%'}).find('img').css({left:0});
 				$('.page').eq(currPage-1).css({textIndent:0}).animate({textIndent:100},{ease:'easeInOut',duration:1000,step:function(now){
 					$(this).find('img').css({left:now+'%'});
 					$(this).css({left:(now/2)+'%'});
 					$(this).next().css({clip:'rect(0px,'+imgW+'px,'+imgH+'px,'+imgW*(now/100)+'px)'})	
 				},complete:function(){
-					$('.open').removeClass('open')
+					$(this).removeClass('open').prev().removeClass('open');
 					$(this).prev().addClass('open').prev().addClass('open');
 				}});
 			}
 			currPage -=pagesShown;
 		}else if($(this).hasClass('right') && currPage < pages-pagesShown){
 			//animate page right
+			console.log('animate page right');
 			var oldCurr = currPage;
 			$('.page').eq(currPage+2).addClass('opening').css({clip:'rect(0px,'+imgW+'px,'+imgH+'px, '+imgW+'px)'}).find('img').css({left:0});
 			$('.page').eq(currPage+1).addClass('opening').css({textIndent:100}).animate({textIndent:0},{ease:'easeInOut',duration:1000,step:function(now){
@@ -46,36 +48,38 @@ $(document).ready(function(){
 			}});
 			currPage +=pagesShown;
 			
-		}else if($(this).hasClass('right')){
+		}else if($(this).hasClass('left')){
 			//last page
-			//$('.page').eq(currPage+2).css({zIndex:5});
-			$('.page').eq(currPage+1).addClass('opening').css({zIndex:5,textIndent:100}).animate({textIndent:0},{ease:'easeInOut',duration:1000,step:function(now){
-				
-				$(this).find('img').css({left:now+'%'});
-				$('.page').css({left:(now/2)+'%'});
-				$(this).css({left:(now/2)+'%'});
-				//$(this).next().css({clip:'rect(0px,'+imgW+'px,'+imgH+'px,'+imgW*(now/100)+'px)'})
-				
+			console.log('animate from last page')
+			$('.page').eq(pages-2).addClass('open opening').find('img').css({left:'-100%'})
+			$('.page').eq(pages-3).addClass('open');
+			$('.page').eq(pages-1).css({textIndent:0}).animate({textIndent:100},{ease:'easeInOut',duration:1000,step:function(now){
+				$(this).css({clip:'rect(0px,'+imgW+'px,'+imgH+'px,'+imgW*(now/100)+'px)'});
+				$(this).prev().css({left:(now/2)+'%'}).find('img').css({left:(-100 + now)+'%'});
+
+			}, complete: function(){
+				$('.opening').removeClass('opening')
 			}});
-			currPage = pages;
+			
+			currPage -= pagesShown;
 		}
 	});
 	$('#last-page').on('click',function(){
-		$('.page').eq(pages-1).addClass('opening').css({zIndex:5,textIndent:100}).animate({textIndent:0},{ease:'easeInOut',duration:1000,step:function(now){
-				
-				// $(this).find('img').css({left:now+'%'});
-				// $('.page').css({left:(now/2)+'%'});
-				// $(this).css({left:(now/2)+'%'});
-				// //$(this).next().css({clip:'rect(0px,'+imgW+'px,'+imgH+'px,'+imgW*(now/100)+'px)'})
-				
-			}});
-			currPage = pages;
-	})
+		console.log('click');
+		
+		$('.page').eq(pages-1).addClass('opening').find('img').animate({left:0},400, function(){
+			$(this).parent().removeClass('opening').addClass('open')
+		});
+		$('.page').css({textIndent:50}).animate({textIndent:0,left:0},{ease:'easeInOut',duration:600,complete:function(){
+			$(this).addClass('open')
+		}});
+		currPage = pages;
+	});
 	//Add Zoom Clas
 	$('.page').dblclick(function(){
 		$(this).toggleClass('zoom');
 		//Hide arrows.
-		$('.arrow').toggleClass('hide');
+		$('.arrow-holder').toggleClass('hide');
 		//Reset zoomed image position.
 		$(this).find('img').css({left:0,top:0})
 	});
