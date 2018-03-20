@@ -1,6 +1,6 @@
 var pages = $('.page').length;
 console.log(pages);
-var currPage = 0;
+var currPage = 1;
 var w = window.innerWidth;
 var h = window.innerHeight;
 //if aspect ratio is greater than 1:1,two pages are shown at a time;
@@ -9,60 +9,120 @@ var pagesShown = (w <= h) ? 1:2;
 $(document).ready(function(){
 
 	$('.arrow').click(function(){
-		console.log('arrow click');
 		var imgW = $('.page').width();
 		var imgH = $('.page').height();
-		console.log(imgW, imgH);
+		//console.log(imgW, imgH);
 		//
-		if($(this).hasClass('left') && currPage != 0 && currPage != pages){
+		var x = 0;
+		if($(this).hasClass('left')){
 			//animate page left
 			console.log('animate page left')
 			if(pagesShown==2){
-				$('.page').eq(currPage-2).addClass('open').css({clip:'rect(0px,'+imgW+'px,'+imgH+'px, '+0+'px)',left:'50%'}).find('img').css({left:0});
-				$('.page').eq(currPage-1).css({textIndent:0}).animate({textIndent:100},{ease:'easeInOut',duration:1000,step:function(now){
-					$(this).find('img').css({left:now+'%'});
-					$(this).css({left:(now/2)+'%'});
-					$(this).next().css({clip:'rect(0px,'+imgW+'px,'+imgH+'px,'+imgW*(now/100)+'px)'})	
-				},complete:function(){
-					$(this).removeClass('open').prev().removeClass('open');
-					$(this).prev().addClass('open').prev().addClass('open');
-				}});
+				// $('.page').eq(currPage-2).css({clip:'rect(0px,'+imgW+'px,'+imgH+'px, '+0+'px)',left:'50%'}).find('img').css({left:0});
+				// $('.page').eq(currPage-1).addClass('closing').css({textIndent:0}).animate({textIndent:100},{ease:'easeInOut',duration:1000,step:function(now){
+				// 	$(this).find('img').css({left:now+'%'});
+				// 	$(this).css({left:(now/2)+'%'});
+				// 	$(this).next().css({clip:'rect(0px,'+imgW+'px,'+imgH+'px,'+imgW*(now/100)+'px)'})	
+				// },complete:function(){
+				// 	$(this).removeClass('open closing').next().removeClass('open closing');
+				// 	//$(this).prev().addClass('open').prev().addClass('open');
+				// }});
+				if(currPage - pagesShown >= 0){
+					console.log('currPage:'+ currPage);
+					var oldCurr = currPage;
+					x = (currPage==pages) ?  1:0;
+					if(currPage == pages)
+					
+				
+					console.log('page: '+((currPage-2)+x));
+					$('#page-'+((currPage-2)+x)).addClass('open opening').find('img').css({left:'-100%'})
+					$('#page-'+((currPage-1)+x)).css({textIndent:0}).animate({textIndent:100},{ease:'easeInOut',duration:1000,step:function(now){
+						$(this).css({clip:'rect(0px,'+imgW+'px,'+imgH+'px,'+imgW*(now/100)+'px)'});
+						$(this).prev().css({left:(now/2)+'%'}).find('img').css({left:(-100 + now)+'%'});
+
+					}, complete: function(){
+						$('.opening').removeClass('opening');
+						console.log('currPage: '+currPage,'oldCurr: '+oldCurr);
+						$('#page-'+oldCurr).removeClass('open').removeAttr('style').find('img').removeAttr('style');
+						$('#page-'+((oldCurr+1))).removeClass('open');
+						if(oldCurr==pages){
+							//currPage++;
+						}else{
+							//$('#page-'+((oldCurr-2))).removeClass('open');
+							
+						}
+						//
+						// $('#page-'+((oldCurr-2)+x)).removeClass('open').removeAttr('style').find('img').removeAttr('style');
+						// $('#page-'+(oldCurr-1+x)).removeClass('open').removeAttr('style').css({left:'50%'}).find('img').removeAttr('style');
+					}});
+				}
 			}
 			currPage -=pagesShown;
-		}else if($(this).hasClass('right') && currPage < pages-pagesShown){
-			//animate page right
-			console.log('animate page right');
-			var oldCurr = currPage;
-			$('.page').eq(currPage+2).addClass('opening').css({clip:'rect(0px,'+imgW+'px,'+imgH+'px, '+imgW+'px)'}).find('img').css({left:0});
-			$('.page').eq(currPage+1).addClass('opening').css({textIndent:100}).animate({textIndent:0},{ease:'easeInOut',duration:1000,step:function(now){
-				
-				$(this).find('img').css({left:now+'%'});
-				
-				$(this).css({left:(now/2)+'%'});
-				$(this).next().css({clip:'rect(0px,'+imgW+'px,'+imgH+'px,'+imgW*(now/100)+'px)'})
-				
-			},complete:function(){
-				$('.page').eq(oldCurr).removeClass('open')
-				$('.page').eq(oldCurr-1).removeClass('open')
-				$('.opening').removeClass('opening').addClass('open');
-			}});
-			currPage +=pagesShown;
-			
-		}else if($(this).hasClass('left')){
-			//last page
-			console.log('animate from last page')
-			$('.page').eq(pages-2).addClass('open opening').find('img').css({left:'-100%'})
-			$('.page').eq(pages-3).addClass('open');
-			$('.page').eq(pages-1).css({textIndent:0}).animate({textIndent:100},{ease:'easeInOut',duration:1000,step:function(now){
-				$(this).css({clip:'rect(0px,'+imgW+'px,'+imgH+'px,'+imgW*(now/100)+'px)'});
-				$(this).prev().css({left:(now/2)+'%'}).find('img').css({left:(-100 + now)+'%'});
+		}else if($(this).hasClass('right') ){
+			if(pagesShown ==2){
+				//animate page right
+				if(currPage+1 <=pages) {
+					console.log('animate page right');
+					console.log('currPage: '+currPage)
+					var oldCurr = (currPage);
+					if(currPage == pages-1){
+						x = (currPage==pages) ?  1:0;
+					}
 
-			}, complete: function(){
-				$('.opening').removeClass('opening')
-			}});
+					$('#page-'+((currPage+2)-x)).addClass('opening').css({clip:'rect(0px,'+imgW+'px,'+imgH+'px, '+imgW+'px)'}).find('img').css({left:0});
+					$('#page-'+((currPage+1)-x)).addClass('opening').css({textIndent:100}).animate({textIndent:0},{ease:'easeInOut',duration:1000,step:function(now){	
+						$(this).find('img').css({left:now+'%'});
+						$(this).css({left:(now/2)+'%'});
+						$(this).next().css({clip:'rect(0px,'+imgW+'px,'+imgH+'px,'+imgW*(now/100)+'px)'});
+						if(currPage+pagesShown > pages+1){
+							$(this).next().css({left:(now/2)+'%'});
+						}
+						
+					},complete:function(){
+						$('.opening').removeClass('opening').addClass('open');
+						
+						console.log('currPage: '+currPage)
+					}});
+					currPage += pagesShown;
+				}
+			}
 			
-			currPage -= pagesShown;
 		}
+
+	// 	else if($(this).hasClass('left')){
+	// 		//last page
+	// 		console.log('animate from last page');
+
+	// 		$('.page').eq(pages-2).addClass('open opening').find('img').css({left:'-100%'})
+	// 		$('.page').eq(pages-3).addClass('open');
+	// 		$('.page').eq(pages-1).css({textIndent:0}).animate({textIndent:100},{ease:'easeInOut',duration:1000,step:function(now){
+	// 			$(this).css({clip:'rect(0px,'+imgW+'px,'+imgH+'px,'+imgW*(now/100)+'px)'});
+	// 			$(this).prev().css({left:(now/2)+'%'}).find('img').css({left:(-100 + now)+'%'});
+
+	// 		}, complete: function(){
+	// 			$('.opening').removeClass('opening');
+	// 			$(this).removeClass('open').removeAttr('style').css({left:'50%'}).find('img').removeAttr('style');
+	// 		}});
+			
+	// 		currPage -= pagesShown;
+	// 	}else if($(this).hasClass('right')){
+	// 		var oldCurr = currPage;
+	// 		console.log('animate to last page')
+	// 		//last page
+	// 		$('.page').eq(currPage).addClass('opening').css({clip:'rect(0px,'+imgW+'px,'+imgH+'px, '+0+'px)'}).find('img');
+	// 		//
+	// 		$('.page').eq(currPage+1).addClass('opening').css({textIndent:100}).animate({textIndent:0},{ease:'easeInOut',duration:1000,step:function(now){
+
+	// 			 $(this).css({left:(now/2)+'%'}).find('img').css({left:now+'%'});
+	// 			 $(this).prev().css({clip:'rect(0px,'+imgW*(now/100)+'px,'+imgH+'px,'+0+'px)',left:now/2+'%'})
+				
+	// 		},complete:function(){
+	// 			 $('.page').eq(oldCurr).removeClass('open')
+	// 			 $('.page').eq(oldCurr-1).removeClass('open')
+	// 			$('.opening').removeClass('opening').addClass('open');
+	// 		}});
+	// 		currPage +=pagesShown;
+	// 	}
 	});
 	$('#last-page').on('click',function(){
 		console.log('click');
@@ -71,7 +131,8 @@ $(document).ready(function(){
 			$(this).parent().removeClass('opening').addClass('open')
 		});
 		$('.page').css({textIndent:50}).animate({textIndent:0,left:0},{ease:'easeInOut',duration:600,complete:function(){
-			$(this).addClass('open')
+			$('.page').not(':last-child').addClass('open');
+
 		}});
 		currPage = pages;
 	});

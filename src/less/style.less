@@ -56,6 +56,8 @@ a {
 		transform:translateY(-50%);
 		overflow: hidden;
 		user-select:none;
+		left: 50%;
+		
 		img{
 			display: block;
 			width: 100%;
@@ -63,6 +65,13 @@ a {
 			position: relative;
 			left: 0%;
 			//pointer-events: none;
+		}
+		&.left{
+			left: 0%;
+
+		}
+		&.right{
+			left: 50%;
 		}
 		&.first{
 			z-index: 3;
@@ -81,6 +90,10 @@ a {
 			img{
 		    	box-shadow: 0px 6px 15px 9px rgba(0,0,0,0.3);
 		    }
+		}
+		&.closing{
+			z-index: 6;
+			box-shadow: 10px 0px 10px 0px rgba(0, 0, 0, 0.5);
 		}
 		&.zoom {
 			left: 0 !important;
